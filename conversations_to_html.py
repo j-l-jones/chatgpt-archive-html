@@ -44,12 +44,6 @@ class ChatLogToHtml:
 
     # html related accessors
     def get_base_css(self):
-        # replace
-        # .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
-        # add
-        # .meta-date { color: var(--muted); font-weight:600; margin-top:2px; }
-        # .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
-
         base_css = """
         :root { --bg:#0b0c10; --fg:#f0f3f6; --muted:#a3b3c2; --accent:#9ae6b4; --chip:#20232a; --card:#111318; }
         * { box-sizing: border-box; }
@@ -58,7 +52,7 @@ class ChatLogToHtml:
         a:hover { text-decoration: underline; }
         .container { max-width: 980px; margin: 0 auto; padding: 28px 16px 80px; }
         .header { gap:12px;  margin-bottom: 24px; }
-        .header h1 { font-size: 24px; margin:0; }
+        .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
         .title { font-size: 28px; margin: 12px 0 20px; }
         .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
         .role { font-weight:600; color: var(--accent); margin-bottom: 8px; }
@@ -76,6 +70,7 @@ class ChatLogToHtml:
         .card { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 10px 12px; }
         .card h3 { margin: 0 0 8px; font-size: 18px; }
         .small { color: var(--muted); font-size: .9em; }
+        .meta-date { color: var(--muted); font-weight:600; margin-top:2px; }
         """
         return base_css
 
@@ -519,7 +514,7 @@ class ChatLogToHtml:
                 parts.append(html)
             elif content.startswith("thought:"):
                 text = content[8:]
-                html = f"thought:{text}'>\n"
+                html = f"thought:{text}>\n"
                 parts.append(html)
             elif content.startswith("reasoning_recap:"):
                 text = content[16:]
@@ -552,7 +547,9 @@ class ChatLogToHtml:
 
             page_html = self.get_page_html()
             base_css = self.get_base_css()
-            html = page_html.format(title=html_escape(title), date=created, css=base_css, body="\n".join(messages))
+            title = html_escape(title)
+            body = "\n".join(messages)
+            html = page_html.format(title=title, date=created, css=base_css, body=body)
             out_path.write_text(html, encoding="utf-8")
             index_items.append((title, out_path.name, created))
 
