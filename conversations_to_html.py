@@ -122,7 +122,8 @@ class ChatLogToHtml:
         return base_css
 
     def get_index_html(self):
-        index_html = """<!doctype html>
+        index_html = """
+        <!doctype html>
         <html lang="en">
         <head>
         <meta charset="utf-8">
@@ -158,7 +159,8 @@ class ChatLogToHtml:
         return index_html
 
     def get_page_html(self):
-        page_html = """<!doctype html>
+        page_html = """
+        <!doctype html>
         <html lang="en">
         <head>
         <meta charset="utf-8">
@@ -301,8 +303,6 @@ class ChatLogToHtml:
 
     # text processing
     def canonicalize(self, value: str, max_len: int = 120) -> str:
-        if value is None:
-            foo = 1
         value = unicodedata.normalize("NFKD", value)
         value = value.replace("/", "-").replace("\\", "-")
         value = re.sub(r"[^\w\s\-\.\(\)&]+", "", value, flags=re.UNICODE)
@@ -330,8 +330,8 @@ class ChatLogToHtml:
         try:
             with open(filepath, 'x') as f:
                 f.write(contents)
-        except Exception as e:
-            foo = 1
+        except Exception as ex:
+            raise ex
         return filepath
 
     def find_image(self, metadata, filename):
@@ -386,8 +386,6 @@ class ChatLogToHtml:
                 content_type = content['content_type']
                 self.process_content_type(content, msgs, author, recipient, content_type, out_dir)
             elif "text" in content:
-                if not "title" in content:
-                    foo = 1
                 self.process_text_upload_content(content, msgs, author, recipient, out_dir)
                 foo = 2
             elif 'thoughts' in content:
@@ -502,11 +500,6 @@ class ChatLogToHtml:
         else:
             self.process_other_content_types(content, msgs, author, recipient, content_type)
 
-    # def text_to_html(self, text: str) -> str:
-    #     if not text:
-    #         return ""
-    #     return "<p>" + html_escape(text).replace("\n", "<br>") + "</p>"
-    #
     # json
     def load_conversations(self, in_file: Path, out_dir: Path) -> List[Dict[str, Any]]:
         with in_file.open("r", encoding="utf-8") as f:
