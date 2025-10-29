@@ -44,79 +44,12 @@ class ChatLogToHtml:
 
     # html related accessors
     def get_base_css(self):
-        # was: .header { gap:12px;  margin-bottom: 24px; }
+        # replace
         # .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
-        # .title-wrap { display:flex; flex-direction:column; }
+        # add
         # .meta-date { color: var(--muted); font-weight:600; margin-top:2px; }
+        # .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
 
-        # was: .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
-        # .message { border-left:4px solid transparent; padding-left:12px; }
-        # .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.8em; margin-left:.5rem; border:1px solid #2a2f3a; background:#111318; color:#a3b3c2; }
-        #
-        # /* color accents per recipient */
-        # .message.message--r-bio        { border-left-color:#10b981; background:rgba(16,185,129,.06); }
-        # .message.message--r-web-run,
-        # .message.message--r-web,
-        # .message.message--r-web-search { border-left-color:#60a5fa; background:rgba(96,165,250,.06); }
-        # .message.message--r-python     { border-left-color:#f59e0b; background:rgba(245,158,11,.06); }
-        # .message.message--r-browser    { border-left-color:#a78bfa; }
-        # .message.message--r-canmore-create_textdoc,
-        # .message.message--r-canmore-update_textdoc { border-left-color:#22d3ee; }
-        # .message[class*="message--r-t2uay3k"] { border-left-color:#ef4444; }
-
-        # /* Collapsible code/messages */
-        # .code-wrap { position: relative; }
-        # .msg-body pre.collapsible { max-height: 18rem; overflow: auto; transition: max-height .2s ease; }
-
-        # add in this stuff
-        #         .code-wrap { position: relative; }
-        #         .msg-body pre.collapsible { max-height: 18rem; overflow: auto; transition: max-height .2s ease; }
-        #         .message { border-left:4px solid transparent; padding-left:12px; }
-        #         .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.8em; margin-left:.5rem; border:1px solid #2a2f3a; background:#111318; color:#a3b3c2; }
-        #         .message.message--r-bio        { border-left-color:#10b981; background:rgba(16,185,129,.06); }
-        #         .message.message--r-web-run,
-        #         .message.message--r-web,
-        #         .message.message--r-web-search { border-left-color:#60a5fa; background:rgba(96,165,250,.06); }
-        #         .message.message--r-python     { border-left-color:#f59e0b; background:rgba(245,158,11,.06); }
-        #         .message.message--r-browser    { border-left-color:#a78bfa; }
-        #         .message.message--r-canmore-create_textdoc,
-        #         .message.message--r-canmore-update_textdoc { border-left-color:#22d3ee; }
-        #         .message[class*="message--r-t2uay3k"] { border-left-color:#ef4444; }
-
-        # add for collapsible sections
-        #         /* Shaded fade at bottom when collapsed */
-        #         .code-wrap.shaded::after {
-        #           content: "";
-        #           position: absolute;
-        #           left: 0; right: 0;
-        #           bottom: 2.6rem;           /* leave space for the button */
-        #           height: 3.2rem;
-        #           pointer-events: none;
-        #           background: linear-gradient(to bottom, rgba(11,12,16,0), rgba(11,12,16,0.95));
-        #           border-bottom-left-radius: 10px;
-        #           border-bottom-right-radius: 10px;
-        #         }
-        #
-        #         /* Toggle button */
-        #         .toggle {
-        #           margin-top: .5rem;
-        #           appearance: none;
-        #           border: 1px solid #2a2f3a;
-        #           background: #111318;
-        #           color: #a3b3c2;
-        #           padding: 6px 10px;
-        #           border-radius: 8px;
-        #           font-size: .9em;
-        #           cursor: pointer;
-        #         }
-        #         .toggle:hover { background:#151923; }
-        #
-        #         /* Optional: also collapse very long plain-text messages */
-        #         .msg-body.collapsible { max-height: 22rem; overflow: hidden; position: relative; }
-        #         .msg-body.collapsible.shaded::after {
-        #           content:""; position:absolute; left:0; right:0; bottom:2.6rem; height:3.2rem;
-        #           pointer-events:none; background: linear-gradient(to bottom, rgba(11,12,16,0), rgba(11,12,16,0.95));
-        #         }
         base_css = """
         :root { --bg:#0b0c10; --fg:#f0f3f6; --muted:#a3b3c2; --accent:#9ae6b4; --chip:#20232a; --card:#111318; }
         * { box-sizing: border-box; }
@@ -124,10 +57,10 @@ class ChatLogToHtml:
         a { color: #8ab4ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .container { max-width: 980px; margin: 0 auto; padding: 28px 16px 80px; }
-        .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
+        .header { gap:12px;  margin-bottom: 24px; }
         .header h1 { font-size: 24px; margin:0; }
         .title { font-size: 28px; margin: 12px 0 20px; }
-
+        .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
         .role { font-weight:600; color: var(--accent); margin-bottom: 8px; }
         .msg-body p { margin: .6em 0; }
         .msg-body pre { background: #0a0c12; border: 1px solid #232a33; padding: 12px; overflow-x: auto; border-radius: 10px; }
@@ -143,13 +76,11 @@ class ChatLogToHtml:
         .card { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 10px 12px; }
         .card h3 { margin: 0 0 8px; font-size: 18px; }
         .small { color: var(--muted); font-size: .9em; }
-        .meta-date { color: var(--muted); font-weight:600; margin-top:2px; }
         """
         return base_css
 
     def get_index_html(self):
-        index_html = """
-        <!doctype html>
+        index_html = """<!doctype html>
         <html lang="en">
         <head>
         <meta charset="utf-8">
@@ -184,113 +115,85 @@ class ChatLogToHtml:
         """
         return index_html
 
-    def get_page_html2(self):
-        # add before body
-        #         <script>
-        #         (function () {{
-        #           const CODE_LINE_THRESHOLD = 20;
-        #           const CODE_CHAR_THRESHOLD = 1200;
-        #           const MSG_HEIGHT_THRESHOLD = 800;
-        #
-        #           function makeCollapsible(target, linesLabel) {{
-        #             const wrap = document.createElement('div');
-        #             wrap.className = 'code-wrap shaded';
-        #             target.parentNode.insertBefore(wrap, target);
-        #             wrap.appendChild(target);
-        #
-        #             target.classList.add('collapsible');
-        #
-        #             const btn = document.createElement('button');
-        #             btn.className = 'toggle';
-        #             btn.setAttribute('aria-expanded', 'false');
-        #             btn.textContent = linesLabel ? `Show all (${{linesLabel}})` : 'Show all';
-        #             btn.addEventListener('click', () => {{
-        #               const open = target.classList.toggle('open');
-        #               if (open) {{
-        #                 target.style.maxHeight = 'none';
-        #                 btn.textContent = 'Hide';
-        #                 btn.setAttribute('aria-expanded', 'true');
-        #                 wrap.classList.remove('shaded');
-        #               }} else {{
-        #                 target.style.maxHeight = '';
-        #                 btn.textContent = linesLabel ? `Show all (${{linesLabel}})` : 'Show all';
-        #                 btn.setAttribute('aria-expanded', 'false');
-        #                 wrap.classList.add('shaded');
-        #                 target.scrollIntoView({{ block: 'nearest' }});
-        #               }}
-        #             }});
-        #             wrap.appendChild(btn);
-        #           }}
-        #
-        #           // Collapse long code blocks
-        #           document.querySelectorAll('.msg-body pre').forEach(pre => {{
-        #             const text = pre.textContent || '';
-        #             const lines = text.split('\n').length;
-        #             if (lines > CODE_LINE_THRESHOLD || text.length > CODE_CHAR_THRESHOLD) {{
-        #               makeCollapsible(pre, `${{lines}} lines`);
-        #             }}
-        #           }});
-        #
-        #           // (Optional) Collapse long non-code messages
-        #           document.querySelectorAll('.msg-body').forEach(body => {{
-        #             if (body.querySelector('pre')) return; // skip if already handled as code
-        #             const h = body.scrollHeight;
-        #             if (h > MSG_HEIGHT_THRESHOLD) {{
-        #               body.classList.add('collapsible','shaded');
-        #               const btn = document.createElement('button');
-        #               btn.className = 'toggle';
-        #               btn.textContent = 'Show all';
-        #               btn.setAttribute('aria-expanded','false');
-        #               btn.addEventListener('click', () => {{
-        #                 const open = body.classList.toggle('open');
-        #                 if (open) {{
-        #                   body.style.maxHeight = 'none';
-        #                   btn.textContent = 'Hide';
-        #                   btn.setAttribute('aria-expanded','true');
-        #                   body.classList.remove('shaded');
-        #                 }} else {{
-        #                   body.style.maxHeight = '';
-        #                   btn.textContent = 'Show all';
-        #                   btn.setAttribute('aria-expanded','false');
-        #                   body.classList.add('shaded');
-        #                   body.scrollIntoView({{ block: 'nearest' }});
-        #                 }}
-        #               }});
-        #               // Insert button after the body’s last child
-        #               const parent = body.parentElement;
-        #               parent.appendChild(btn);
-        #             }}
-        #           }});
-        #         }})();
-        #         </script>
-        page_html = """<!doctype html>
-        <html lang="en">
-        <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{title}</title>
-        <style>{css}</style>
-        </head>
-
-        <body>
-        <div class="container">
-          <div class="header">
-            <a href="index.html">← Back</a>
-            <h1 class="title">{title}</h1>
-            <h6>{date}</h6>
-          </div>
-          {body}
-        </div>
-        </body>
-        </html>"""
-        return page_html
-
     def get_page_html(self):
-        #           const CODE_LINE_THRESHOLD = 20;   // collapse if more than N lines
-        #           const CODE_CHAR_THRESHOLD = 1200; // or if very long text
-        #           const MSG_HEIGHT_THRESHOLD = 800; // px; collapse long unfenced messages (optional)
-        #
-        #           // Helper: wrap an element and add a toggle
+        # add before body
+        # -        <script>
+        # -        (function () {
+        # -          const CODE_LINE_THRESHOLD = 20;
+        # -          const CODE_CHAR_THRESHOLD = 1200;
+        # -          const MSG_HEIGHT_THRESHOLD = 800;
+        # -
+        # -          function makeCollapsible(target, linesLabel) {
+        # -            const wrap = document.createElement('div');
+        # -            wrap.className = 'code-wrap shaded';
+        # -            target.parentNode.insertBefore(wrap, target);
+        # -            wrap.appendChild(target);
+        # -
+        # -            target.classList.add('collapsible');
+        # -
+        # -            const btn = document.createElement('button');
+        # -            btn.className = 'toggle';
+        # -            btn.setAttribute('aria-expanded', 'false');
+        # -            btn.textContent = linesLabel ? `Show all (${linesLabel})` : 'Show all';
+        # -            btn.addEventListener('click', () => {
+        # -              const open = target.classList.toggle('open');
+        # -              if (open) {
+        # -                target.style.maxHeight = 'none';
+        # -                btn.textContent = 'Hide';
+        # -                btn.setAttribute('aria-expanded', 'true');
+        # -                wrap.classList.remove('shaded');
+        # -              } else {
+        # -                target.style.maxHeight = '';
+        # -                btn.textContent = linesLabel ? `Show all (${linesLabel})` : 'Show all';
+        # -                btn.setAttribute('aria-expanded', 'false');
+        # -                wrap.classList.add('shaded');
+        # -                target.scrollIntoView({ block: 'nearest' });
+        # -              }
+        # -            });
+        # -            wrap.appendChild(btn);
+        # -          }
+        # -
+        # -          // Collapse long code blocks
+        # -          document.querySelectorAll('.msg-body pre').forEach(pre => {
+        # -            const text = pre.textContent || '';
+        # -            const lines = text.split('\n').length;
+        # -            if (lines > CODE_LINE_THRESHOLD || text.length > CODE_CHAR_THRESHOLD) {
+        # -              makeCollapsible(pre, `${lines} lines`);
+        # -            }
+        # -          });
+        # -          // (Optional) Collapse long non-code messages
+        # -          document.querySelectorAll('.msg-body').forEach(body => {
+        # -            if (body.querySelector('pre')) return; // skip if already handled as code
+        # -            const h = body.scrollHeight;
+        # -            if (h > MSG_HEIGHT_THRESHOLD) {
+        # -              body.classList.add('collapsible','shaded');
+        # -              const btn = document.createElement('button');
+        # -              btn.className = 'toggle';
+        # -              btn.textContent = 'Show all';
+        # -              btn.setAttribute('aria-expanded','false');
+        # -              btn.addEventListener('click', () => {
+        # -                const open = body.classList.toggle('open');
+        # -                if (open) {
+        # -                  body.style.maxHeight = 'none';
+        # -                  btn.textContent = 'Hide';
+        # -                  btn.setAttribute('aria-expanded','true');
+        # -                  body.classList.remove('shaded');
+        # -                } else {
+        # -                  body.style.maxHeight = '';
+        # -                  btn.textContent = 'Show all';
+        # -                  btn.setAttribute('aria-expanded','false');
+        # -                  body.classList.add('shaded');
+        # -                  body.scrollIntoView({ block: 'nearest' });
+        # -                }
+        # -              });
+        # -              // Insert button after the body’s last child
+        # -              const parent = body.parentElement;
+        # -              parent.appendChild(btn);
+        # -            }
+        # -          });
+        # -        })();
+        # -        </script>
+
         page_html = """<!doctype html>
         <html lang="en">
         <head>
@@ -299,83 +202,6 @@ class ChatLogToHtml:
         <title>{title}</title>
         <style>{css}</style>
         </head>
-        <script>
-        (function () {
-          const CODE_LINE_THRESHOLD = 20;   
-          const CODE_CHAR_THRESHOLD = 1200; 
-          const MSG_HEIGHT_THRESHOLD = 800; 
-        
-          function makeCollapsible(target, linesLabel) {
-            const wrap = document.createElement('div');
-            wrap.className = 'code-wrap shaded';
-            target.parentNode.insertBefore(wrap, target);
-            wrap.appendChild(target);
-        
-            target.classList.add('collapsible');
-        
-            const btn = document.createElement('button');
-            btn.className = 'toggle';
-            btn.setAttribute('aria-expanded', 'false');
-            btn.textContent = linesLabel ? `Show all (${linesLabel})` : 'Show all';
-            btn.addEventListener('click', () => {
-              const open = target.classList.toggle('open');
-              if (open) {
-                target.style.maxHeight = 'none';
-                btn.textContent = 'Hide';
-                btn.setAttribute('aria-expanded', 'true');
-                wrap.classList.remove('shaded');
-              } else {
-                target.style.maxHeight = '';
-                btn.textContent = linesLabel ? `Show all (${linesLabel})` : 'Show all';
-                btn.setAttribute('aria-expanded', 'false');
-                wrap.classList.add('shaded');
-                target.scrollIntoView({ block: 'nearest' });
-              }
-            });
-            wrap.appendChild(btn);
-          }
-        
-          // Collapse long code blocks
-          document.querySelectorAll('.msg-body pre').forEach(pre => {
-            const text = pre.textContent || '';
-            const lines = text.split('\n').length;
-            if (lines > CODE_LINE_THRESHOLD || text.length > CODE_CHAR_THRESHOLD) {
-              makeCollapsible(pre, `${lines} lines`);
-            }
-          });
-        
-          // (Optional) Collapse long non-code messages
-          document.querySelectorAll('.msg-body').forEach(body => {
-            if (body.querySelector('pre')) return; // skip if already handled as code
-            const h = body.scrollHeight;
-            if (h > MSG_HEIGHT_THRESHOLD) {
-              body.classList.add('collapsible','shaded');
-              const btn = document.createElement('button');
-              btn.className = 'toggle';
-              btn.textContent = 'Show all';
-              btn.setAttribute('aria-expanded','false');
-              btn.addEventListener('click', () => {
-                const open = body.classList.toggle('open');
-                if (open) {
-                  body.style.maxHeight = 'none';
-                  btn.textContent = 'Hide';
-                  btn.setAttribute('aria-expanded','true');
-                  body.classList.remove('shaded');
-                } else {
-                  body.style.maxHeight = '';
-                  btn.textContent = 'Show all';
-                  btn.setAttribute('aria-expanded','false');
-                  body.classList.add('shaded');
-                  body.scrollIntoView({ block: 'nearest' });
-                }
-              });
-              // Insert button after the body’s last child
-              const parent = body.parentElement;
-              parent.appendChild(btn);
-            }
-          });
-        })();
-        </script>
         <body>
         <div class="container">
           <div class="header">
@@ -394,11 +220,11 @@ class ChatLogToHtml:
     def get_date(self, d):
         ts = d.get("create_time") or d.get("update_time")
         if not ts:
-            return ""
+          return ""
         dt = datetime.datetime.fromtimestamp(ts)
         fmt = "%B %-d, %Y %-I:%M %p"
         if sys.platform.startswith("win"):
-            fmt = "%B %#d, %Y %#I:%M %p"
+          fmt = "%B %#d, %Y %#I:%M %p"
         return dt.strftime(fmt)
 
     def get_unique_path(self, title, out_dir: Path) -> Path:
@@ -414,9 +240,9 @@ class ChatLogToHtml:
                 return candidate
             i += 1
 
-    def get_recipient(self, msg):
-        if 'recipient' in msg:
-            recipient = msg['recipient']
+    def get_recipient(self, conv):
+        if 'recipient' in conv:
+            recipient = conv['recipient']
             return recipient
         return None
 
@@ -580,7 +406,6 @@ class ChatLogToHtml:
         if len(files) == 0:
             path = os.path.join(self.archive_dir, filename)
             files = glob.glob(path)
-
         for specific_file in files:
             self.copy_file_to_dir_if_new(out_dir, specific_file)
             text = f"image_file:{filename}"
@@ -671,16 +496,9 @@ class ChatLogToHtml:
 
     # html
     def message_to_html(self, message: dict, role_label) -> str:
-        recipient = (message.get("audience") or "").strip().lower().replace(".", "-")
-        rec_cls = f" message--r-{recipient}" if recipient else ""
-        rec_badge = f'<span class="badge">{html_escape(recipient)}</span>' if recipient else ""
-
-        parts = [f'<div class="message{rec_cls}">',
-                 f'<div class="role">{html_escape(role_label)}{rec_badge}</div>',
+        parts = ["<div class=\"message\">",
+                 f"<div class=\"role\">{html_escape(role_label)}</div>",
                  '<div class="msg-body">']
-        # parts = ["<div class=\"message\">",
-        #          f"<div class=\"role\">{html_escape(role_label)}</div>",
-        #          '<div class="msg-body">']
         if 'content' in message:
             content = message['content']
             if content.startswith("image_file:"):
@@ -701,7 +519,7 @@ class ChatLogToHtml:
                 parts.append(html)
             elif content.startswith("thought:"):
                 text = content[8:]
-                html = f"thought:{text}>\n"
+                html = f"thought:{text}'>\n"
                 parts.append(html)
             elif content.startswith("reasoning_recap:"):
                 text = content[16:]
@@ -720,7 +538,7 @@ class ChatLogToHtml:
     def generate_html(self, convs, out_dir):
         index_items = []
         for i, conv in enumerate(convs):
-            if i > 1: break
+            if i > 10: break
             title = conv['title']
             if not title: title = "Untitled"
             out_path = self.get_unique_path(title, out_dir)
@@ -734,9 +552,7 @@ class ChatLogToHtml:
 
             page_html = self.get_page_html()
             base_css = self.get_base_css()
-            title = html_escape(title)
-            body = "\n".join(messages)
-            html = page_html.format(title=title, date=created, css=base_css, body=body)
+            html = page_html.format(title=html_escape(title), date=created, css=base_css, body="\n".join(messages))
             out_path.write_text(html, encoding="utf-8")
             index_items.append((title, out_path.name, created))
 
@@ -776,7 +592,4 @@ if __name__ == '__main__':
     out_dir.mkdir(parents=True, exist_ok=True)
 
     chat_to_html.generate(input_file, out_dir)
-
-
-
 
