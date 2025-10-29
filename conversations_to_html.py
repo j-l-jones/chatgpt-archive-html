@@ -54,7 +54,6 @@ class ChatLogToHtml:
         .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
         .header h1 { font-size: 24px; margin:0; }
         .title { font-size: 28px; margin: 12px 0 20px; }
-        .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
         .role { font-weight:600; color: var(--accent); margin-bottom: 8px; }
         .msg-body p { margin: .6em 0; }
         .msg-body pre { background: #0a0c12; border: 1px solid #232a33; padding: 12px; overflow-x: auto; border-radius: 10px; }
@@ -71,6 +70,53 @@ class ChatLogToHtml:
         .card h3 { margin: 0 0 8px; font-size: 18px; }
         .small { color: var(--muted); font-size: .9em; }
         .meta-date { color: var(--muted); font-weight:600; margin-top:2px; }
+                .code-wrap { position: relative; }
+        .msg-body pre.collapsible { max-height: 18rem; overflow: auto; transition: max-height .2s ease; }
+        .message { border-left:4px solid transparent; padding-left:12px; }
+        .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.8em; margin-left:.5rem; border:1px solid 2a2f3a; background:111318; color:a3b3c2; }
+        .message.message--r-bio        { border-left-color:10b981; background:rgba(16,185,129,.06); }
+        .message.message--r-web-run,
+        .message.message--r-web,
+        .message.message--r-web-search { border-left-color:60a5fa; background:rgba(96,165,250,.06); }
+        .message.message--r-python     { border-left-color:f59e0b; background:rgba(245,158,11,.06); }
+        .message.message--r-browser    { border-left-color:a78bfa; }
+        .message.message--r-canmore-create_textdoc,
+        .message.message--r-canmore-update_textdoc { border-left-color:22d3ee; }
+        .message[class*="message--r-t2uay3k"] { border-left-color:ef4444; }
+
+        /* Shaded fade at bottom when collapsed */
+        .code-wrap.shaded::after {
+          content: "";
+          position: absolute;
+          left: 0; right: 0;
+          bottom: 2.6rem;           /* leave space for the button */
+          height: 3.2rem;
+          pointer-events: none;
+          background: linear-gradient(to bottom, rgba(11,12,16,0), rgba(11,12,16,0.95));
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+        
+        /* Toggle button */
+        .toggle {
+          margin-top: .5rem;
+          appearance: none;
+          border: 1px solid 2a2f3a;
+          background: 111318;
+          color: a3b3c2;
+          padding: 6px 10px;
+          border-radius: 8px;
+          font-size: .9em;
+          cursor: pointer;
+        }
+        .toggle:hover { background:151923; }
+        
+        /* Optional: also collapse very long plain-text messages */
+        .msg-body.collapsible { max-height: 22rem; overflow: hidden; position: relative; }
+        .msg-body.collapsible.shaded::after {
+          content:""; position:absolute; left:0; right:0; bottom:2.6rem; height:3.2rem;
+          pointer-events:none; background: linear-gradient(to bottom, rgba(11,12,16,0), rgba(11,12,16,0.95));
+        }
         """
         return base_css
 
