@@ -53,6 +53,7 @@ class ChatLogToHtml:
         .container { max-width: 980px; margin: 0 auto; padding: 28px 16px 80px; }
         .header { gap:12px;  margin-bottom: 24px; }
         .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
+        .header h1 { font-size: 24px; margin:0; }
         .title { font-size: 28px; margin: 12px 0 20px; }
         .message { background: var(--card); border:1px solid #252a33; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
         .role { font-weight:600; color: var(--accent); margin-bottom: 8px; }
@@ -235,9 +236,9 @@ class ChatLogToHtml:
                 return candidate
             i += 1
 
-    def get_recipient(self, conv):
-        if 'recipient' in conv:
-            recipient = conv['recipient']
+    def get_recipient(self, msg):
+        if 'recipient' in msg:
+            recipient = msg['recipient']
             return recipient
         return None
 
@@ -491,8 +492,11 @@ class ChatLogToHtml:
 
     # html
     def message_to_html(self, message: dict, role_label) -> str:
-        parts = ["<div class=\"message\">",
-                 f"<div class=\"role\">{html_escape(role_label)}</div>",
+        recipient = (message.get("audience") or "").strip().lower().replace(".", "-")
+        rec_cls = f" message--r-{recipient}" if recipient else ""
+        rec_badge = f'<span class="badge">{html_escape(recipient)}</span>' if recipient else ""
+        parts = [f'<div class="message{rec_cls}">',
+                 f'<div class="role">{html_escape(role_label)}{rec_badge}</div>',
                  '<div class="msg-body">']
         if 'content' in message:
             content = message['content']
