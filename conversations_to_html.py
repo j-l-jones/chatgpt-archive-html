@@ -70,10 +70,11 @@ class ChatLogToHtml:
         .card h3 { margin: 0 0 8px; font-size: 18px; }
         .small { color: var(--muted); font-size: .9em; }
         .meta-date { color: var(--muted); font-weight:600; margin-top:2px; }
-                .code-wrap { position: relative; }
+        .code-wrap { position: relative; }
         .msg-body pre.collapsible { max-height: 18rem; overflow: auto; transition: max-height .2s ease; }
         .message { border-left:4px solid transparent; padding-left:12px; }
         .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.8em; margin-left:.5rem; border:1px solid 2a2f3a; background:111318; color:a3b3c2; }
+         /* color accents per recipient */
         .message.message--r-bio        { border-left-color:10b981; background:rgba(16,185,129,.06); }
         .message.message--r-web-run,
         .message.message--r-web,
@@ -204,7 +205,7 @@ class ChatLogToHtml:
           // Collapse long code blocks
           document.querySelectorAll('.msg-body pre').forEach(pre => {{
             const text = pre.textContent || '';
-            const lines = text.split('\n').length;
+            const lines = text.split('\\n').length;
             if (lines > CODE_LINE_THRESHOLD || text.length > CODE_CHAR_THRESHOLD) {{
               makeCollapsible(pre, `${{lines}} lines`);
             }}
@@ -447,7 +448,7 @@ class ChatLogToHtml:
             files = glob.glob(path)
         for specific_file in files:
             self.copy_file_to_dir_if_new(out_dir, specific_file)
-            text = f"image_file:{filename}"
+            text = f"image_file:{specific_file}"
             msgs.append({"role": author, "audience": recipient, "content": text})
         if len(files) == 0:
             print(f"could not find image file for {asset_pointer}")
