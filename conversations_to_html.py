@@ -51,7 +51,6 @@ class ChatLogToHtml:
         a { color: #8ab4ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .container { max-width: 980px; margin: 0 auto; padding: 28px 16px 80px; }
-        .header { gap:12px;  margin-bottom: 24px; }
         .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
         .header h1 { font-size: 24px; margin:0; }
         .title { font-size: 28px; margin: 12px 0 20px; }
@@ -112,84 +111,6 @@ class ChatLogToHtml:
         return index_html
 
     def get_page_html(self):
-        # add before body
-        # -        <script>
-        # -        (function () {
-        # -          const CODE_LINE_THRESHOLD = 20;
-        # -          const CODE_CHAR_THRESHOLD = 1200;
-        # -          const MSG_HEIGHT_THRESHOLD = 800;
-        # -
-        # -          function makeCollapsible(target, linesLabel) {
-        # -            const wrap = document.createElement('div');
-        # -            wrap.className = 'code-wrap shaded';
-        # -            target.parentNode.insertBefore(wrap, target);
-        # -            wrap.appendChild(target);
-        # -
-        # -            target.classList.add('collapsible');
-        # -
-        # -            const btn = document.createElement('button');
-        # -            btn.className = 'toggle';
-        # -            btn.setAttribute('aria-expanded', 'false');
-        # -            btn.textContent = linesLabel ? `Show all (${linesLabel})` : 'Show all';
-        # -            btn.addEventListener('click', () => {
-        # -              const open = target.classList.toggle('open');
-        # -              if (open) {
-        # -                target.style.maxHeight = 'none';
-        # -                btn.textContent = 'Hide';
-        # -                btn.setAttribute('aria-expanded', 'true');
-        # -                wrap.classList.remove('shaded');
-        # -              } else {
-        # -                target.style.maxHeight = '';
-        # -                btn.textContent = linesLabel ? `Show all (${linesLabel})` : 'Show all';
-        # -                btn.setAttribute('aria-expanded', 'false');
-        # -                wrap.classList.add('shaded');
-        # -                target.scrollIntoView({ block: 'nearest' });
-        # -              }
-        # -            });
-        # -            wrap.appendChild(btn);
-        # -          }
-        # -
-        # -          // Collapse long code blocks
-        # -          document.querySelectorAll('.msg-body pre').forEach(pre => {
-        # -            const text = pre.textContent || '';
-        # -            const lines = text.split('\n').length;
-        # -            if (lines > CODE_LINE_THRESHOLD || text.length > CODE_CHAR_THRESHOLD) {
-        # -              makeCollapsible(pre, `${lines} lines`);
-        # -            }
-        # -          });
-        # -          // (Optional) Collapse long non-code messages
-        # -          document.querySelectorAll('.msg-body').forEach(body => {
-        # -            if (body.querySelector('pre')) return; // skip if already handled as code
-        # -            const h = body.scrollHeight;
-        # -            if (h > MSG_HEIGHT_THRESHOLD) {
-        # -              body.classList.add('collapsible','shaded');
-        # -              const btn = document.createElement('button');
-        # -              btn.className = 'toggle';
-        # -              btn.textContent = 'Show all';
-        # -              btn.setAttribute('aria-expanded','false');
-        # -              btn.addEventListener('click', () => {
-        # -                const open = body.classList.toggle('open');
-        # -                if (open) {
-        # -                  body.style.maxHeight = 'none';
-        # -                  btn.textContent = 'Hide';
-        # -                  btn.setAttribute('aria-expanded','true');
-        # -                  body.classList.remove('shaded');
-        # -                } else {
-        # -                  body.style.maxHeight = '';
-        # -                  btn.textContent = 'Show all';
-        # -                  btn.setAttribute('aria-expanded','false');
-        # -                  body.classList.add('shaded');
-        # -                  body.scrollIntoView({ block: 'nearest' });
-        # -                }
-        # -              });
-        # -              // Insert button after the body’s last child
-        # -              const parent = body.parentElement;
-        # -              parent.appendChild(btn);
-        # -            }
-        # -          });
-        # -        })();
-        # -        </script>
-
         page_html = """<!doctype html>
         <html lang="en">
         <head>
@@ -198,6 +119,82 @@ class ChatLogToHtml:
         <title>{title}</title>
         <style>{css}</style>
         </head>
+        <script>
+        (function () {{
+          const CODE_LINE_THRESHOLD = 20;
+          const CODE_CHAR_THRESHOLD = 1200;
+          const MSG_HEIGHT_THRESHOLD = 800;
+
+          function makeCollapsible(target, linesLabel) {{
+            const wrap = document.createElement('div');
+            wrap.className = 'code-wrap shaded';
+            target.parentNode.insertBefore(wrap, target);
+            wrap.appendChild(target);
+
+            target.classList.add('collapsible');
+
+            const btn = document.createElement('button');
+            btn.className = 'toggle';
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = linesLabel ? `Show all (${{linesLabel}})` : 'Show all';
+            btn.addEventListener('click', () => {{
+              const open = target.classList.toggle('open');
+              if (open) {{
+                target.style.maxHeight = 'none';
+                btn.textContent = 'Hide';
+                btn.setAttribute('aria-expanded', 'true');
+                wrap.classList.remove('shaded');
+              }} else {{
+                target.style.maxHeight = '';
+                btn.textContent = linesLabel ? `Show all (${{linesLabel}})` : 'Show all';
+                btn.setAttribute('aria-expanded', 'false');
+                wrap.classList.add('shaded');
+                target.scrollIntoView({{ block: 'nearest' }});
+              }}
+            }});
+            wrap.appendChild(btn);
+          }}
+
+          // Collapse long code blocks
+          document.querySelectorAll('.msg-body pre').forEach(pre => {{
+            const text = pre.textContent || '';
+            const lines = text.split('\n').length;
+            if (lines > CODE_LINE_THRESHOLD || text.length > CODE_CHAR_THRESHOLD) {{
+              makeCollapsible(pre, `${{lines}} lines`);
+            }}
+          }});
+          // (Optional) Collapse long non-code messages
+          document.querySelectorAll('.msg-body').forEach(body => {{
+            if (body.querySelector('pre')) return; // skip if already handled as code
+            const h = body.scrollHeight;
+            if (h > MSG_HEIGHT_THRESHOLD) {{
+              body.classList.add('collapsible','shaded');
+              const btn = document.createElement('button');
+              btn.className = 'toggle';
+              btn.textContent = 'Show all';
+              btn.setAttribute('aria-expanded','false');
+              btn.addEventListener('click', () => {{
+                const open = body.classList.toggle('open');
+                if (open) {{
+                  body.style.maxHeight = 'none';
+                  btn.textContent = 'Hide';
+                  btn.setAttribute('aria-expanded','true');
+                  body.classList.remove('shaded');
+                }} else {{
+                  body.style.maxHeight = '';
+                  btn.textContent = 'Show all';
+                  btn.setAttribute('aria-expanded','false');
+                  body.classList.add('shaded');
+                  body.scrollIntoView({{ block: 'nearest' }});
+                }}
+              }});
+              // Insert button after the body’s last child
+              const parent = body.parentElement;
+              parent.appendChild(btn);
+            }}
+          }});
+        }})();
+        </script>
         <body>
         <div class="container">
           <div class="header">
