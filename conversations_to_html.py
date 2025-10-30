@@ -75,11 +75,37 @@ class ChatLogToHtml:
         .msg-body pre.collapsible { max-height: 18rem; overflow: auto; transition: max-height .2s ease; }
         .message { border-left:4px solid transparent; padding-left:12px; }
         
-        .badge { ... border:1px solid #2a2f3a; background:#111318; color:#a3b3c2; }
+        .role-line {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 8px;
+        }
+        .badge {
+          font-size: 0.75em;
+          padding: 2px 6px;
+          border-radius: 6px;
+          background: #222831;
+          color: #9ca3af;
+          border: 1px solid #2a2f3a;
+        }
          /* color accents per recipient */
-        .message.message--r-bio { border-left-color:#10b981; background:rgba(16,185,129,.06); }
+        .message.message--r-bio,
+        .message.message--r-canmore-create_textdoc,
+        .message.message--r-python,
         .message.message--r-web,
-        .message.message--r-web-run,
+        .message[class*="message--r-t2uay3k"] {
+          background: #101316;
+          border-left: 3px solid #4ade80; /* green accent */
+          opacity: 0.85;
+        }
+        .message.message--r-bio .msg-body {
+          display: none;
+        }
+        .message.message--r-bio.collapsed .msg-body {
+          display: block;
+        }
+                 
         .message.message--r-web-search { border-left-color:#60a5fa; background:rgba(96,165,250,.06); }
         .message.message--r-python { border-left-color:#f59e0b; background:rgba(245,158,11,.06); }
         .message.message--r-browser { border-left-color:#a78bfa; }
@@ -254,6 +280,17 @@ class ChatLogToHtml:
             }}
           }});
         }})();
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {{
+          document.querySelectorAll('.message--r-bio').forEach(el => {{
+            const btn = document.createElement('button');
+            btn.textContent = 'Show bio';
+            btn.className = 'toggle';
+            btn.onclick = () => el.classList.toggle('collapsed');
+            el.prepend(btn);
+          }});
+        }});
         </script>
         </body>
         </html>
@@ -534,9 +571,15 @@ class ChatLogToHtml:
         recipient = (message.get("audience") or "").strip().lower().replace(".", "-")
         rec_cls = f" message--r-{recipient}" if recipient else ""
         rec_badge = f'<span class="badge">{html_escape(recipient)}</span>' if recipient else ""
-        parts = [f'<div class="message{rec_cls}">',
-                 f'<div class="role">{html_escape(role_label)}{rec_badge}</div>',
-                 '<div class="msg-body">']
+        parts = [
+            f'<div class="message message--r-{recipient}">',
+            f'<div class="role-line"><span class="role">{html_escape(role_label)}</span>'
+        ]
+        if recipient:
+            parts.append(f'<span class="badge">{html_escape(recipient)}</span>')
+        parts.append('</div>')  # closes role-line
+        parts.append('<div class="msg-body">')
+
         if 'content' in message:
             content = message['content']
             if content.startswith("image_file:"):
@@ -576,7 +619,6 @@ class ChatLogToHtml:
     def generate_html(self, convs, out_dir):
         index_items = []
         for i, conv in enumerate(convs):
-            if i > 10: break
             title = conv['title']
             if not title: title = "Untitled"
             out_path = self.get_unique_path(title, out_dir)
